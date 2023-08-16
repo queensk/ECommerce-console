@@ -25,15 +25,18 @@ namespace ECommerce_console.Models
             Price = price;
         }
 
-        public void printProduct()
-        {
-            Console.WriteLine(this);
-        }
-
         public override string ToString()
         {
             return$"Id: {Id} Title: {Title} Description: {Description} Category: {Category} Price: {Price}";
         }
+
+        public void printProduct()
+        {
+        Console.WriteLine($"{ConsoleColor.White}Id: {ConsoleColor.Blue}{Id} {ConsoleColor.White}Title: {ConsoleColor.Green}{Title} {ConsoleColor.White}Description: {ConsoleColor.Yellow}{Description} {ConsoleColor.White}Category: {ConsoleColor.Magenta}{Category} {ConsoleColor.White}Price: {ConsoleColor.Red}{Price}");
+
+        Console.ResetColor();
+        }
+
     }
 
 }
