@@ -14,9 +14,9 @@ namespace ECommerce_console.services
         private readonly HttpClient _httpClient = new HttpClient();
         public ProductsService()
         {
-            _httpClient.BaseAddress = new Uri("https://localhost:3000/");
+            _httpClient.BaseAddress = new Uri("http://localhost:3000/");
         }
-        public async Task<StatusMessage> AddProduct(Products product)
+        public async Task <StatusMessage> AddProduct(Products product)
         {
             var json = JsonSerializer.Serialize(product);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -31,7 +31,7 @@ namespace ECommerce_console.services
             }
         }
 
-        public async Task<StatusMessage> DeleteProduct(int id)
+        public async Task <StatusMessage> DeleteProduct(string id)
         {
             var response = await _httpClient.DeleteAsync($"products/{id}");
             if (response.IsSuccessStatusCode)
@@ -45,13 +45,13 @@ namespace ECommerce_console.services
         
         }
 
-        public async Task<Products> GetProduct(int id)
+        public async Task <Products> GetProduct(string id)
         {
             var response = await _httpClient.GetAsync($"products/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var product = JsonSerializer.Deserialize<Products>(await response.Content.ReadAsStringAsync());
-                return product;
+                return product ?? new Products();
             }
             else
             {
@@ -59,18 +59,17 @@ namespace ECommerce_console.services
             }
         }
 
-        public Task<List<Products>> GetProducts()
+        public async Task <List<Products>> GetProducts()
         {
-            var response = _httpClient.GetFromJsonAsync<List<Products>>("products");
-            return response;
+            var response = await _httpClient.GetFromJsonAsync<List<Products>>("products");
+            return response ?? new List<Products>();
         }
 
-        public async Task<StatusMessage> UpdateProduct(Products product)
+        public async Task <StatusMessage> UpdateProduct(Products product)
         {
             var json = JsonSerializer.Serialize(product);
-            
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"books/{product.Id}", content);
+            var response = await _httpClient.PutAsync($"products/{product.Id}", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -78,11 +77,8 @@ namespace ECommerce_console.services
             }
             else
             {
-                throw new Exception("Failed to update book.");
+                return new StatusMessage { message = "Failed to update book." };
             }
         }
     }
-    
-        
-    
 }
