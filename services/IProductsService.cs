@@ -10,11 +10,11 @@ namespace ECommerce_console.services
     {
         Task<List<Products>> GetProducts();
 
-        Task<Products> GetProduct(int id);
+        Task<Products> GetProduct(string id);
 
         Task<StatusMessage> UpdateProduct(Products product);
 
-        Task<StatusMessage> DeleteProduct(int id);
+        Task<StatusMessage> DeleteProduct(string id);
 
         Task<StatusMessage> AddProduct(Products product);
     }
